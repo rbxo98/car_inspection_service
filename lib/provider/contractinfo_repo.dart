@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 import '../models/user_info.dart';
 
-const String ApiUrl = "http://192.168.0.135:8000/api/ContractInfoApi/";
+const String ApiUrl = "http://168.131.224.49:8000/api/ContractInfoApi/";
 
 class ContractRepository with ChangeNotifier {
   ContractInfo contract = ContractInfo();

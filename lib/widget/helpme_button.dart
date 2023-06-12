@@ -4,9 +4,10 @@ import 'package:car_inspection/provider/helpme_repo.dart';
 import 'package:car_inspection/provider/user_repo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
-import '../page/add_mycar_page.dart';
+import '../page/helpme_get_vehicle_registration_certificate_page.dart';
 import '../page/helpme_page.dart';
 
 class HelpMeButton extends StatelessWidget {
@@ -23,20 +24,20 @@ class HelpMeButton extends StatelessWidget {
           fit: BoxFit.cover,
         ),
       ),
-      onTap: () {
-        if (context
-            .read<myCarRepository>()
-            .myCars
-            .isNotEmpty) {
-          Navigator.push(context,MaterialPageRoute(builder: (context){
-            return ListenableProvider<HelpMeRepository>(create:(_)=>HelpMeRepository(),child: HelpMePage(),);
-          }));
-        }
-        else {
-          Navigator.push(context,MaterialPageRoute(builder: (context){
-            return AddMyCarPage();
-          }));
-        }
+      onTap: () async {
+        await context.read<myCarRepository>().getMyCarFromSNSKey(context.read<UserRepository>().user.SNSKey!,ispermmit: true).then((value) {
+          if(value!){
+            Navigator.push(context,MaterialPageRoute(builder: (context){
+              return ListenableProvider<HelpMeRepository>(create:(_)=>HelpMeRepository(),child: HelpMePage(),);
+            }));
+          }
+          else{
+            Fluttertoast.showToast(msg: "등록된 차량이 없습니다.");
+            Navigator.push(context,MaterialPageRoute(builder: (context){
+              return GetVehicleRegistrationCertificate();
+            }));
+          }
+        });
       },
     );
   }

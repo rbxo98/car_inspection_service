@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
@@ -72,18 +73,19 @@ class LoginPageState extends State<LoginPage> {
         child: ElevatedButton(
           onPressed: () async {
             await context.read<UserRepository>().signInWithGoogle().then((value) {
-              if (!value!) {
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => SignupPage()),
-                    (route) => false);
-              } else {
+              if (value!) {
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
                         builder: (BuildContext context) => MyHomePage()),
                     (route) => false);
+              }
+              else{
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => SignupPage()),
+                        (route) => false);
               }
             });
           },

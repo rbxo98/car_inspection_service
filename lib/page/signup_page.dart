@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:provider/provider.dart';
 import 'dart:io';
 
 import '../models/user_info.dart';
@@ -136,7 +138,24 @@ class SignupPageState extends State<SignupPage> {
           horizontal: 50,
         ),
         child: ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
+            await context.read<UserRepository>().signup(
+              UserInfo(SNSKey: context.read<UserRepository>().user.SNSKey,
+              Name:NameController.text,
+              Tel: TelController.text,
+              BirthDay: BirthDayController.text)
+            ).then((value) {
+              if(value!){
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => MyHomePage()),
+                        (route) => false);
+              }
+              else{
+                Fluttertoast.showToast(msg: "회원가입 오류");
+              }
+            });
           },
           child: const Text('회원가입'),
         ),

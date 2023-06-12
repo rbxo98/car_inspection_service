@@ -13,35 +13,42 @@ import 'package:http/http.dart' as http;
 
 import '../script/get_somthing_from_something.dart';
 
-const String ApiUrl = "http://192.168.0.135:8000/api/";
+const String ApiUrl = "http://168.131.224.49:8000/api/";
 
 class UserRepository with ChangeNotifier {
-  late final UserInfo? _user;
+  late UserInfo? _user = UserInfo();
   late final MyCarInfo? _myCar;
   late final AgentUserInfo? _agent_user;
-  bool _isIdentified = false;
 
   UserInfo get user => _user!;
+
   MyCarInfo get myCar => _myCar!;
+
   AgentUserInfo get agent_user => _agent_user!;
 
-
-  Future<bool?> signInWithGoogle() async {
+  Future<dynamic> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-        var result = await getUserInfoFromSNSKey(googleUser!.id);
-        if (result!)
-          {
-            Fluttertoast.showToast(msg: "로그인 성공");
-            _isIdentified=true;
-            notifyListeners();
-            return true;
-          }
-      return null;
-    }
-    on TypeError catch (e) {
+      GoogleSignInAccount? googleUser;
+      await GoogleSignIn().signIn().then((value) {
+        print(value);
+        googleUser = value;
+        notifyListeners();
+      });
+      print(googleUser!.id);
+      _user!.SNSKey=googleUser!.id;
+      var result = false;
+      await getUserInfoFromSNSKey(googleUser!.id).then((value) {
+        if (value!) {
+          Fluttertoast.showToast(msg: "로그인 성공");
+          notifyListeners();
+          result = true;
+        }
+      });
+      print(result);
+      return result;
+    } on TypeError catch (e) {
       log(e.toString());
-      Fluttertoast.showToast(msg: "구글 로그인 오류");
+      Fluttertoast.showToast(msg: "로그인 실패");
       return false;
     }
   }
@@ -49,14 +56,18 @@ class UserRepository with ChangeNotifier {
   Future<bool?> getUserInfoFromSNSKey(String uid) async {
     try {
       var response =
-      await http.get(Uri.parse(ApiUrl + "UserInfoApi/?SNSKey=" + uid));
+          await http.get(Uri.parse(ApiUrl + "UserInfoApi/?SNSKey=" + uid));
       final int code = response.statusCode;
       if (code == 200) {
         var data = jsonDecode(utf8.decode(response.bodyBytes));
         if (!data.isEmpty) {
-          _user = UserInfo.fromJson(data[0]);
-          _myCar=MyCarInfo(SNSKey: _user!.SNSKey);
-          _agent_user=AgentUserInfo(SNSKey: _user!.SNSKey);
+          var Data = UserInfo.fromJson(data[0]);
+          _user!.SNSKey = Data.SNSKey;
+          _user!.Name = Data.Name;
+          _user!.BirthDay = Data.BirthDay;
+          _user!.Tel = Data.Tel;
+          _myCar = MyCarInfo(SNSKey: _user!.SNSKey);
+          _agent_user = AgentUserInfo(SNSKey: _user!.SNSKey);
           notifyListeners();
           return true;
         }
@@ -70,6 +81,9 @@ class UserRepository with ChangeNotifier {
 
   Future<bool?> signup(UserInfo user) async {
     try {
+      print(user.SNSKey);
+      print(user.Tel);
+      _user = user;
       var response = await http.post(Uri.parse(ApiUrl + "UserInfoApi/"),
           body: user.toJson());
       final int code = response.statusCode;

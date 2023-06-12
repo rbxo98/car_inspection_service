@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 
 import '../models/mycar_info.dart';
 
-const String ApiUrl = "http://192.168.0.135:8000/api/";
+const String ApiUrl = "http://168.131.224.49:8000/api/";
 
 Future<Uint8List> getBytesFromAsset(String path, int width) async {
   ByteData data = await rootBundle.load(path);

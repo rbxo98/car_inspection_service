@@ -28,7 +28,7 @@ class MarkerMapState extends State<MarkerMap> {
       onMapCreated: (controller) async {
         context
             .read<RequestRepository>()
-            .getRequestbyTime(DateTime.now())
+            .getRequestbyTime(DateTime.now(),context.read<UserRepository>().user.Name!)
             .then((value) async {
           if (value) {
             for (RequestInfo request

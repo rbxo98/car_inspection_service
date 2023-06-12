@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
-const String ApiUrl = "http://192.168.0.135:8000/api/MyCarInfoApi/";
+const String ApiUrl = "http://168.131.224.49:8000/api/MyCarInfoApi/";
 
 class myCarRepository with ChangeNotifier {
   late List<MyCarInfo> _myCars=[];
@@ -15,10 +15,10 @@ class myCarRepository with ChangeNotifier {
 
 
 
-  Future<bool?> getMyCarFromSNSKey(String uid) async {
+  Future<bool?> getMyCarFromSNSKey(String uid,{bool ispermmit=false}) async {
     _myCars=[];
     try {
-      var response = await http.get(Uri.parse(ApiUrl + "?SNSKey=" + uid));
+      var response = await http.get(Uri.parse(ApiUrl + "?SNSKey=" + uid+"&permit="+(ispermmit?"True":"False")));
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         if (!data.isEmpty) {
@@ -28,25 +28,14 @@ class myCarRepository with ChangeNotifier {
           notifyListeners();
           return true;
         }
+        else{
+          notifyListeners();
+          return false;
+        }
       }
-      return null;
     }  catch (e) {
       log(e.toString());
       return null;
-    }
-  }
-
-  static Future<bool?> isMyCarInfo(String SNSKey) async {
-    var response =
-    await http.get(Uri.parse(ApiUrl + "?permit=True&SNSKey=" + SNSKey.toString()));
-    if (response.statusCode == 200) {
-      var data = jsonDecode(utf8.decode(response.bodyBytes));
-      if (!data.isEmpty) {
-        return true;
-      }
-      else {
-        return false;
-      }
     }
   }
 

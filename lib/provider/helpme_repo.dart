@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
-const String ApiUrl = "http://192.168.0.135:8000/api/RequestInfoApi/";
+const String ApiUrl = "http://168.131.224.49:8000/api/RequestInfoApi/";
 
 class HelpMeRepository with ChangeNotifier {
   RequestInfo request_info= RequestInfo();

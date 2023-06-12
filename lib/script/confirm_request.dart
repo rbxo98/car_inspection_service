@@ -6,7 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import '../models/contract_info.dart';
 
-const String ApiUrl = "http://192.168.0.135:8000/api/ContractInfoApi/";
+const String ApiUrl = "http://168.131.224.49:8000/api/ContractInfoApi/";
 
 void confirmRequest(int id, UserInfo myInfo) async {
   ContractInfo contractInfo = ContractInfo(
