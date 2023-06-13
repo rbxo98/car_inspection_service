@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:car_inspection/api.dart';
 import 'package:car_inspection/models/mycar_info.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
-const String ApiUrl = "http://168.131.224.49:8000/api/MyCarInfoApi/";
+const String ApiUrl = ApiKey.myCarApi;
 
 class myCarRepository with ChangeNotifier {
   late List<MyCarInfo> _myCars=[];

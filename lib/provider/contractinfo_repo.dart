@@ -1,5 +1,6 @@
 import 'package:car_inspection/models/contract_info.dart';
 import 'package:flutter/material.dart';
+import '../api.dart';
 import '../models/request_info.dart';
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 import '../models/user_info.dart';
 
-const String ApiUrl = "http://168.131.224.49:8000/api/ContractInfoApi/";
+const String ApiUrl = ApiKey.contractInfoApi;
 
 class ContractRepository with ChangeNotifier {
   ContractInfo contract = ContractInfo();

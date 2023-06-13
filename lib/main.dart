@@ -73,7 +73,7 @@ class LoginPageState extends State<LoginPage> {
         child: ElevatedButton(
           onPressed: () async {
             await context.read<UserRepository>().signInWithGoogle().then((value) {
-              if (value!) {
+              if (value! && context.read<UserRepository>().user.SNSKey!=null) {
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(

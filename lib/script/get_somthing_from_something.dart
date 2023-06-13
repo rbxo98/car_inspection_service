@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'package:car_inspection/api.dart';
 import 'package:car_inspection/models/user_info.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_geocoder/geocoder.dart';
@@ -23,7 +24,7 @@ Future<Uint8List> getBytesFromAsset(String path, int width) async {
 }
 
 Future<LatLng> getLatLngFromAddress(String query) async {
-  var addresses = await Geocoder.local.findAddressesFromQuery(query);
+  var addresses = await Geocoder.google(ApiKey.googleMapKey).findAddressesFromQuery(query);
   var first = addresses.first;
   return LatLng(first.coordinates.latitude!, first.coordinates.longitude!);
 }

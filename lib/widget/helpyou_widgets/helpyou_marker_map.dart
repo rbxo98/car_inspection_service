@@ -26,11 +26,13 @@ class MarkerMapState extends State<MarkerMap> {
   Widget build(BuildContext context) {
     return GoogleMap(
       onMapCreated: (controller) async {
+        print("oncreate");
         context
             .read<RequestRepository>()
-            .getRequestbyTime(DateTime.now(),context.read<UserRepository>().user.Name!)
+            .getRequestbyTime(DateTime.now(),context.read<UserRepository>().user.SNSKey!)
             .then((value) async {
           if (value) {
+            print("get request");
             for (RequestInfo request
                 in context.read<RequestRepository>().requestList) {
               await getRequestInfoDetail(request).then((value) {

@@ -16,7 +16,7 @@ class MarkersRepository with ChangeNotifier {
 
   void getMarker(BuildContext context, List<RequestInfo> requestInfoList,
       List<RequestInfoDetail> requestInfoDetail) async {
-
+    print(1);
     Uint8List markerIcon =
     await getBytesFromAsset('lib/assets/help_mark.png', 50);
     Map<String, List<RequestInfo>> requestMap = {};

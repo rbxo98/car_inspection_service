@@ -20,7 +20,6 @@ class MyHomePage extends StatefulWidget {
 class MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    print("efwfwef");
     context.read<myCarRepository>().getMyCarFromSNSKey(context.watch<UserRepository>().user.SNSKey!);
     return Scaffold(
       appBar: MainAppBar(),
